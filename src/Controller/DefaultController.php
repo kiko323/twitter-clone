@@ -76,6 +76,26 @@ class DefaultController extends AbstractController
     }
 
 
+    /**
+     * @Route("/delete/{id}", name="delete-post")
+     */
+
+    public function deleteField($id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+
+
+        $post = $entityManager->getRepository(Posts::class)->find($id);
+
+
+        $entityManager->remove($post);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('home');
+
+    }
+
+
 
 
 
