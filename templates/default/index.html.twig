@@ -1,0 +1,39 @@
+{% extends "base.html.twig" %}
+
+{% block addtitle %} Index {% endblock %}
+
+{% block body %}
+
+
+
+    <main role="main">
+
+        <!-- Main jumbotron for a primary marketing message or call to action -->
+        <div class="jumbotron">
+            <div class="container">
+            {{ form_start(post_form) }}
+            {{ form_widget(post_form) }}
+            <input type="submit" value="Post" class="btn btn-primary float-right"/>
+            {{ form_end(post_form) }}
+
+            </div>
+        </div>
+    <div class="container">
+
+        {% for post in posts  %}
+        <div align="center" class="alert alert-primary" role="alert">
+            <span>Post: {{ post.posts_msg }}</span>
+            <br>
+            <span class="blockquote-footer">From <cite title="Source Title">{{ post.posts_email }}</cite></span>
+            <span>ovdje ce ici datum</span>
+            <a href="#" class="btn btn-danger delete-post" data-id="{{ post.id }}" id="delete-post" >DELETE</a>
+            <br>
+        </div>
+        {% endfor %}
+
+
+
+    </div>
+{% endblock %}
+       {#  Rijesiti ovo sa putanjama #}
+{% block javascripts %}<script src="main.js"></script>{% endblock %}
