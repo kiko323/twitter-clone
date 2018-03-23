@@ -3,6 +3,8 @@ namespace App\Controller;
 
 use App\Form\PostType;
 use Doctrine\DBAL\Types\TextType;
+use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -10,34 +12,62 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Doctrine\DBAL\Driver\Connection;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Posts;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
 
 
 class DefaultController extends AbstractController
 {
     /**
      * @Route("/", name="home")
+     *
      */
     public function index(Connection $conn, Request $req){
 
 
+       // die( print ($pagenum));
+
         $form= $this->prepareForm($req, $conn); //show the Post form
         $posts = $this->fetch(); //fetching all posts
 
+        $pager=$this->paginate($req);
+
             return $this->render('default/index.html.twig', array(
-                'posts' =>$posts,
+               'posts' =>$pager,
                 'post_form'=> $form->createView()
             ));
 
 
     }
 
+
     public function fetch()
     {
+
         $posts=$this->getDoctrine()->getRepository(Posts::class)->findby(array(), array('id' => 'DESC'));
 
-        //$posts=$connection->fetchAll('SELECT * FROM posts ORDER BY id DESC');
-        return $posts;
+       return $posts;
+
     }
+
+    /**
+     *
+     */
+
+    public function paginate($req)
+    {
+        $pagenum=$req->query->getInt('page',1);
+
+        $posts= $this->fetch();
+
+        $adapter= new ArrayAdapter($posts);
+        $pagerfanta=new Pagerfanta($adapter);
+
+        $pagerfanta->setMaxPerPage(5);
+        $pagerfanta->setCurrentPage($pagenum);  //ovdje ubaciti koji je page
+
+        return $pagerfanta;
+    }
+
 
     public function prepareForm($request, $conn)
     {
