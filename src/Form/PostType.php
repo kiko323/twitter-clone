@@ -8,6 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Validator\Constraints\Length;
 
 class PostType extends AbstractType
 {
@@ -15,7 +17,17 @@ class PostType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class)
-            ->add('message', TextareaType::class)
+            ->add('message', TextareaType::class, array(
+                'constraints' => array(
+                    new Length(array(
+                        'min' => 5,
+                         'max' =>255   )
+                    )
+
+
+
+            )))
+
         ;
     }
 

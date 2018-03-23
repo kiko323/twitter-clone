@@ -15,6 +15,7 @@ use App\Entity\Posts;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 
 
+
 class DefaultController extends AbstractController
 {
     /**
@@ -23,12 +24,7 @@ class DefaultController extends AbstractController
      */
     public function index(Connection $conn, Request $req){
 
-
-       // die( print ($pagenum));
-
-        $form= $this->prepareForm($req, $conn); //show the Post form
-        $posts = $this->fetch(); //fetching all posts
-
+        $form= $this->prepareForm($req); //show the Post form
         $pager=$this->paginate($req);
 
             return $this->render('default/index.html.twig', array(
@@ -42,16 +38,13 @@ class DefaultController extends AbstractController
 
     public function fetch()
     {
-
         $posts=$this->getDoctrine()->getRepository(Posts::class)->findby(array(), array('id' => 'DESC'));
 
-       return $posts;
+        return $posts;
 
     }
 
-    /**
-     *
-     */
+
 
     public function paginate($req)
     {
@@ -69,7 +62,7 @@ class DefaultController extends AbstractController
     }
 
 
-    public function prepareForm($request, $conn)
+    public function prepareForm($request)
     {
         $form = $this->createForm(PostType::class);
         $form->handleRequest($request);
@@ -97,6 +90,8 @@ class DefaultController extends AbstractController
        $post->setPostsMsg($message);
 
 
+
+
        $entityManager->persist($post);
 
        $entityManager->flush();
@@ -114,9 +109,7 @@ class DefaultController extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager();
 
-
         $post = $entityManager->getRepository(Posts::class)->find($id);
-
 
         $entityManager->remove($post);
         $entityManager->flush();
