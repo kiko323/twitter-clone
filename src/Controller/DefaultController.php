@@ -13,6 +13,7 @@ use Doctrine\DBAL\Driver\Connection;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Posts;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 
 
@@ -88,8 +89,9 @@ class DefaultController extends AbstractController
 
        $post->setPostsEmail($email);
        $post->setPostsMsg($message);
+       $post->setPostsCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
 
-
+      // die(print_r($post->getPostsCreatedAt()));
 
 
        $entityManager->persist($post);

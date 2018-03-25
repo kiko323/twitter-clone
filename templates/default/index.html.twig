@@ -26,7 +26,7 @@
             <span>Post: {{ post.posts_msg }}</span>
             <br>
             <span class="blockquote-footer">From <cite title="Source Title">{{ post.posts_email }}</cite></span>
-            <span class="float-left">ovdje ce ici datum{#   {{ post.posts_created_at }}  #}</span>
+            <span class="float-left">   {{ post.posts_created_at|date('Y-m-d H:i:s')  }}  </span>
             <a href="/delete/{{ post.id }}" class="btn btn-danger delete-post float-right" data-id="{{ post.id }}" id="delete-post" >DELETE</a>
             <br>
         </div>

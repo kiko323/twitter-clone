@@ -20,9 +20,7 @@ class PostType extends AbstractType
             ->add('message', TextareaType::class, array(
                 'constraints' => array(
                     new Length(array(
-                        'min' => 5,
-                         'max' =>255   )
-                    )
+                        'min' => 5, 'max' =>255   ))
 
 
 
