@@ -55,7 +55,7 @@ class DefaultController extends AbstractController
 
         $posts= $this->fetch();
 
-   
+
 
 
         $adapter= new ArrayAdapter($posts);
