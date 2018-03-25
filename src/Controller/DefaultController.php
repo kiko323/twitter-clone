@@ -26,6 +26,7 @@ class DefaultController extends AbstractController
     public function index(Connection $conn, Request $req){
 
         $form= $this->prepareForm($req); //show the Post form
+
         $pager=$this->paginate($req);
 
             return $this->render('default/index.html.twig', array(
@@ -41,6 +42,7 @@ class DefaultController extends AbstractController
     {
         $posts=$this->getDoctrine()->getRepository(Posts::class)->findby(array(), array('id' => 'DESC'));
 
+
         return $posts;
 
     }
@@ -53,11 +55,16 @@ class DefaultController extends AbstractController
 
         $posts= $this->fetch();
 
+   
+
+
         $adapter= new ArrayAdapter($posts);
         $pagerfanta=new Pagerfanta($adapter);
 
         $pagerfanta->setMaxPerPage(5);
-        $pagerfanta->setCurrentPage($pagenum);  //ovdje ubaciti koji je page
+        $pagerfanta->setCurrentPage($pagenum);
+
+
 
         return $pagerfanta;
     }
