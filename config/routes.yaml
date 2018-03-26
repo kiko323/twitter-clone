@@ -5,3 +5,5 @@
 #app_lucky_number:
 #    path: /test/useri/
  #   controller: App\Controller\TestController::useri
+logout:
+     path: /logout
