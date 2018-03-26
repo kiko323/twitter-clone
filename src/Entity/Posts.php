@@ -29,7 +29,7 @@ class Posts
     public $posts_msg;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime")
      */
     public $posts_created_at;
 

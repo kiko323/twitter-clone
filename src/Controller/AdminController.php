@@ -17,11 +17,10 @@ use Symfony\Component\Validator\Constraints\DateTime;
 
 
 
-class DefaultController extends AbstractController
+class AdminController extends AbstractController
 {
     /**
-     * @Route("/", name="home")
-     *
+     * @Route("/admin", name="administrator")
      */
     public function index(Connection $conn, Request $req){
 
@@ -29,10 +28,10 @@ class DefaultController extends AbstractController
 
         $pager=$this->paginate($req);
 
-            return $this->render('default/index.html.twig', array(
-               'posts' =>$pager,
-                'post_form'=> $form->createView()
-            ));
+        return $this->render('admin/index.html.twig', array(
+            'posts' =>$pager,
+            'post_form'=> $form->createView()
+        ));
 
 
     }
@@ -90,37 +89,41 @@ class DefaultController extends AbstractController
 
     public function insertFields($email, $message)
     {
-       $entityManager = $this->getDoctrine()->getManager();
+        $entityManager = $this->getDoctrine()->getManager();
 
-       $post= new Posts();
+        $post= new Posts();
 
-       $post->setPostsEmail($email);
-       $post->setPostsMsg($message);
-       $post->setPostsCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
+        $post->setPostsEmail($email);
+        $post->setPostsMsg($message);
+        $post->setPostsCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
 
-      // die(print_r($post->getPostsCreatedAt()));
+        // die(print_r($post->getPostsCreatedAt()));
 
 
-       $entityManager->persist($post);
+        $entityManager->persist($post);
 
-       $entityManager->flush();
+        $entityManager->flush();
 
 
         //$conn->query("INSERT INTO posts (posts_email, posts_msg) VALUES ('$email','$message')");
     }
 
 
+    /**
+     * @Route("/admin/delete/{id}", name="delete-post")
+     */
 
+    public function deleteField($id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
 
+        $post = $entityManager->getRepository(Posts::class)->find($id);
 
+        $entityManager->remove($post);
+        $entityManager->flush();
 
+        return $this->redirectToRoute('administrator');
 
-
-
-
-
-
-
+    }
 
 }
-
