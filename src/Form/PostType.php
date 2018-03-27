@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Posts;
 use Doctrine\DBAL\Types\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -15,21 +16,19 @@ class PostType extends AbstractType {
 
   public function buildForm (FormBuilderInterface $builder, array $options) {
     $builder
-      ->add('email', EmailType::class)
-      ->add('message', TextareaType::class, array(
+      ->add('postsEmail', EmailType::class)
+      ->add('postsMsg', TextareaType::class, array(
         'constraints' => array(
           new Length(array(
             'min' => 5, 'max' => 255
           ))
-
-
         )
       ));
   }
 
   public function configureOptions (OptionsResolver $resolver) {
     $resolver->setDefaults([
-      // Configure your form options here
+      'data-class' => Posts::class
     ]);
   }
 }

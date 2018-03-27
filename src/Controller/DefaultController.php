@@ -25,7 +25,7 @@ class DefaultController extends AbstractController {
    */
   public function indexAction (Request $req) {
 
-    $form = $this->prepareForm($req); //show the Post form
+    $form = $this->insertPost($req); //show the Post form
     $pager = $this->paginate($req);
 
     return $this->render('default/index.html.twig', array(
@@ -60,30 +60,20 @@ class DefaultController extends AbstractController {
   }
 
 
-  public function prepareForm ($request) {
-    $form = $this->createForm(PostType::class);
+  public function insertPost ($request) {
+    $post=new Posts();
+
+    $form = $this->createForm(PostType::class, $post);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      $postFormData = $form->getData();
-      $this->insertFields($postFormData['email'], $postFormData['message']);
+      $entityManager = $this->getDoctrine()->getManager();
+      $post->setPostsCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
 
+      $entityManager->persist($post);
+      $entityManager->flush();
     }
-
     return $form;
-  }
-
-  public function insertFields ($email, $message) {
-    $entityManager = $this->getDoctrine()->getManager();
-
-    $post = new Posts();
-
-    $post->setPostsEmail($email);
-    $post->setPostsMsg($message);
-    $post->setPostsCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
-
-    $entityManager->persist($post);
-    $entityManager->flush();
   }
 
 

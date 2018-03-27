@@ -26,7 +26,7 @@ class AdminController extends AbstractController {
    */
   public function indexAction (Connection $conn, Request $req) {
 
-    $form = $this->prepareForm($req); //show the Post form
+    $form = $this->insertPost($req); //show the Post form
 
     $pager = $this->paginate($req);
 
@@ -64,37 +64,20 @@ class AdminController extends AbstractController {
   }
 
 
-  public function prepareForm ($request) {
-    $form = $this->createForm(PostType::class);
+  public function insertPost ($request) {
+    $post=new Posts();
+
+    $form = $this->createForm(PostType::class, $post);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      $postFormData = $form->getData(); //moooozda ce trebati return $this->redirectToRoute('/');
+      $entityManager = $this->getDoctrine()->getManager();
+      $post->setPostsCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
 
-      $this->insertFields($postFormData['email'], $postFormData['message']);
-
-      dump($postFormData);
+      $entityManager->persist($post);
+      $entityManager->flush();
     }
-
-
     return $form;
-  }
-
-  public function insertFields ($email, $message) {
-    $entityManager = $this->getDoctrine()->getManager();
-
-    $post = new Posts();
-
-    $post->setPostsEmail($email);
-    $post->setPostsMsg($message);
-    $post->setPostsCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
-
-    // die(print_r($post->getPostsCreatedAt()));
-
-
-    $entityManager->persist($post);
-
-    $entityManager->flush();
   }
 
 
