@@ -21,4 +21,4 @@
 ###< symfony/web-server-bundle ###
 .idea
 .vagrant/
-Vagrantfile
+.Vagrantfile
