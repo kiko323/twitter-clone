@@ -1,13 +1,15 @@
 security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
+        Symfony\Component\Security\Core\User\User:
+            algorithm: bcrypt
+            cost: 4
     providers:
         in_memory:
           memory:
             users:
               admin1:
-                password: admin1
+                password: $2a$04$138Ybffm4vxOH9GoBfACDetEa4TWjlaVIiUTrEY1iDMe8PZPotxOi
                 roles: 'ROLE_ADMIN'
         #database_users:
          #   entity: { class: App\Entity\User, property: username }

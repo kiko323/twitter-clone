@@ -16,7 +16,7 @@
                     </div>
                 {% endfor %}
 
-                <form action="{{ path('login') }}" method="post">
+                <form action="{{ path('login')|e('html') }}" method="post">
                     <label for="username" class="sr-only">Username </label>
                     <input type="text" class="form-control" placeholder="Username" id="username" name="_username" value="{{ last_username }}" />
 

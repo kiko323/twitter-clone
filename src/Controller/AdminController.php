@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Posts;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
 
 
 
@@ -21,6 +23,7 @@ class AdminController extends AbstractController
 {
     /**
      * @Route("/admin", name="administrator")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function index(Connection $conn, Request $req){
 
