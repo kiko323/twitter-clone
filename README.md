@@ -8,4 +8,4 @@ composer install
 ```
 
 ## MYSQL atabase
-Import the .sql file, and edit the .env accordingly.
+Import the .sql file, and edit the .env file accordingly.
