@@ -1,4 +1,10 @@
 # twitter-clone
+Features include:
+- Guests can post
+- Guests can see all posts
+- Built-in administrator account
+- "Administrator" can delete posts
+
 
 ## installing the project
 
