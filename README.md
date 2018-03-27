@@ -11,5 +11,5 @@ composer install
 Import the .sql file, and edit the .env file accordingly.
 
 ### Administrator
-Admin username: admin1
+Admin username: admin1 <br>
 Admin password: admin1
