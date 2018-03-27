@@ -21,10 +21,10 @@
 
     {% for post in posts %}
       <div align="center" class="alert alert-primary p-3" role="alert">
-        <div class="">{{ post.posts_msg }}</div>
+        <div class="">{{ post.postsMsg }}</div>
         <br>
-        <span class="blockquote-footer">From <cite title="Source Title">{{ post.posts_email }}</cite></span>
-        <span class="float-left text-muted">   {{ time_diff(post.posts_created_at) }}  </span>
+        <span class="blockquote-footer">From <cite title="Source Title">{{ post.postsEmail }}</cite></span>
+        <span class="float-left text-muted">   {{ time_diff(post.postsCreatedAt) }}  </span>
         {# <a href="/delete/{{ post.id }}" class="btn btn-danger delete-post float-right" data-id="{{ post.id }}" id="delete-post" >DELETE</a> #}
         <br>
 
