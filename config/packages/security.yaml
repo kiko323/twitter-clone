@@ -26,6 +26,7 @@ security:
             form_login:
                 login_path: login
                 check_path: login
+                csrf_token_generator: security.csrf.token_manager
             # https://symfony.com/doc/current/security/form_login_setup.html
 
             logout:

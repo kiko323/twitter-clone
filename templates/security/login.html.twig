@@ -9,9 +9,12 @@
         <div align="center"><h1>Please login</h1></div>
         <div class="container">
             <div class="mt-4">
-                {% if error %}
-                    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                {% endif %}
+
+                {% for message in app.flashes('error') %}
+                    <div class="flash-notice alert alert-danger">
+                        {{ message }}
+                    </div>
+                {% endfor %}
 
                 <form action="{{ path('login') }}" method="post">
                     <label for="username" class="sr-only">Username </label>
@@ -19,6 +22,10 @@
 
                     <label for="password" class="sr-only">Password </label>
                     <input type="password" id="password" placeholder="Password" name="_password" class="form-control"/>
+
+                    <input type="hidden" name="_csrf_token"
+                           value="{{ csrf_token('authenticate') }}"
+                    >
 
                     {#
                         If you want to control the URL the user

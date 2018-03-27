@@ -23,10 +23,9 @@ class DefaultController extends AbstractController
      * @Route("/", name="home")
      *
      */
-    public function index(Connection $conn, Request $req){
+    public function index(Request $req){
 
         $form= $this->prepareForm($req); //show the Post form
-
         $pager=$this->paginate($req);
 
             return $this->render('default/index.html.twig', array(
@@ -42,7 +41,6 @@ class DefaultController extends AbstractController
     {
         $posts=$this->getDoctrine()->getRepository(Posts::class)->findby(array(), array('id' => 'DESC'));
 
-
         return $posts;
 
     }
@@ -55,15 +53,11 @@ class DefaultController extends AbstractController
 
         $posts= $this->fetch();
 
-
-
-
         $adapter= new ArrayAdapter($posts);
         $pagerfanta=new Pagerfanta($adapter);
 
         $pagerfanta->setMaxPerPage(5);
         $pagerfanta->setCurrentPage($pagenum);
-
 
 
         return $pagerfanta;
@@ -78,12 +72,9 @@ class DefaultController extends AbstractController
         if($form->isSubmitted() && $form->isValid())
         {
             $postFormData=$form->getData(); //moooozda ce trebati return $this->redirectToRoute('/');
-
             $this->insertFields($postFormData['email'], $postFormData['message']);
-
-            dump($postFormData);
+            //dump($postFormData);
         }
-
 
         return $form;
     }
@@ -98,15 +89,10 @@ class DefaultController extends AbstractController
        $post->setPostsMsg($message);
        $post->setPostsCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
 
-      // die(print_r($post->getPostsCreatedAt()));
-
-
        $entityManager->persist($post);
-
        $entityManager->flush();
 
 
-        //$conn->query("INSERT INTO posts (posts_email, posts_msg) VALUES ('$email','$message')");
     }
 
 
