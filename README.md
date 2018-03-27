@@ -1,4 +1,4 @@
-# twitter-clone
+# Twitter-clone
 Features include:
 - Guests can post
 - Guests can see all posts
