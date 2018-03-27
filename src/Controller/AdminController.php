@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Form\PostType;
@@ -17,116 +18,100 @@ use Symfony\Component\Validator\Constraints\DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 
+class AdminController extends AbstractController {
+
+  /**
+   * @Route("/admin", name="administrator")
+   * @Security("has_role('ROLE_ADMIN')")
+   */
+  public function indexAction (Connection $conn, Request $req) {
+
+    $form = $this->prepareForm($req); //show the Post form
+
+    $pager = $this->paginate($req);
+
+    return $this->render('admin/index.html.twig', array(
+      'posts' => $pager,
+      'post_form' => $form->createView()
+    ));
 
 
-class AdminController extends AbstractController
-{
-    /**
-     * @Route("/admin", name="administrator")
-     * @Security("has_role('ROLE_ADMIN')")
-     */
-    public function index(Connection $conn, Request $req){
-
-        $form= $this->prepareForm($req); //show the Post form
-
-        $pager=$this->paginate($req);
-
-        return $this->render('admin/index.html.twig', array(
-            'posts' =>$pager,
-            'post_form'=> $form->createView()
-        ));
+  }
 
 
+  public function fetch () {
+    $posts = $this->getDoctrine()->getRepository(Posts::class)->findby(array(), array('id' => 'DESC'));
+
+
+    return $posts;
+
+  }
+
+
+  public function paginate ($req) {
+    $pagenum = $req->query->getInt('page', 1);
+
+    $posts = $this->fetch();
+
+
+    $adapter = new ArrayAdapter($posts);
+    $pagerfanta = new Pagerfanta($adapter);
+
+    $pagerfanta->setMaxPerPage(5);
+    $pagerfanta->setCurrentPage($pagenum);
+
+    return $pagerfanta;
+  }
+
+
+  public function prepareForm ($request) {
+    $form = $this->createForm(PostType::class);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+      $postFormData = $form->getData(); //moooozda ce trebati return $this->redirectToRoute('/');
+
+      $this->insertFields($postFormData['email'], $postFormData['message']);
+
+      dump($postFormData);
     }
 
 
-    public function fetch()
-    {
-        $posts=$this->getDoctrine()->getRepository(Posts::class)->findby(array(), array('id' => 'DESC'));
+    return $form;
+  }
+
+  public function insertFields ($email, $message) {
+    $entityManager = $this->getDoctrine()->getManager();
+
+    $post = new Posts();
+
+    $post->setPostsEmail($email);
+    $post->setPostsMsg($message);
+    $post->setPostsCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
+
+    // die(print_r($post->getPostsCreatedAt()));
 
 
-        return $posts;
+    $entityManager->persist($post);
 
-    }
-
-
-
-    public function paginate($req)
-    {
-        $pagenum=$req->query->getInt('page',1);
-
-        $posts= $this->fetch();
+    $entityManager->flush();
+  }
 
 
+  /**
+   * @Route("/admin/delete/{id}", name="delete-post")
+   */
 
+  public function deleteFieldAction ($id) {
+    $entityManager = $this->getDoctrine()->getManager();
 
-        $adapter= new ArrayAdapter($posts);
-        $pagerfanta=new Pagerfanta($adapter);
+    $post = $entityManager->getRepository(Posts::class)->find($id);
 
-        $pagerfanta->setMaxPerPage(5);
-        $pagerfanta->setCurrentPage($pagenum);
+    $entityManager->remove($post);
+    $entityManager->flush();
 
+    return $this->redirectToRoute('administrator');
 
-
-        return $pagerfanta;
-    }
-
-
-    public function prepareForm($request)
-    {
-        $form = $this->createForm(PostType::class);
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid())
-        {
-            $postFormData=$form->getData(); //moooozda ce trebati return $this->redirectToRoute('/');
-
-            $this->insertFields($postFormData['email'], $postFormData['message']);
-
-            dump($postFormData);
-        }
-
-
-        return $form;
-    }
-
-    public function insertFields($email, $message)
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $post= new Posts();
-
-        $post->setPostsEmail($email);
-        $post->setPostsMsg($message);
-        $post->setPostsCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
-
-        // die(print_r($post->getPostsCreatedAt()));
-
-
-        $entityManager->persist($post);
-
-        $entityManager->flush();
-
-
-        //$conn->query("INSERT INTO posts (posts_email, posts_msg) VALUES ('$email','$message')");
-    }
-
-
-    /**
-     * @Route("/admin/delete/{id}", name="delete-post")
-     */
-
-    public function deleteField($id)
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $post = $entityManager->getRepository(Posts::class)->find($id);
-
-        $entityManager->remove($post);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('administrator');
-
-    }
+  }
 
 }

@@ -1,44 +1,44 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Twitter clone{% endblock %} | {% block addtitle %}{% endblock %}</title>
-        {% block stylesheets %}<link href="{{ asset('/build/css/bootstrap.min.css') }}" rel="stylesheet" />
+  <head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Twitter clone{% endblock %} | {% block addtitle %}{% endblock %}</title>
+    {% block stylesheets %}
+      <link href="{{ asset('/build/css/bootstrap.min.css') }}" rel="stylesheet" />
+    {% endblock %}
+  </head>
+  <body>
 
-        {% endblock %}
-    </head>
-    <body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="#">Twitter - Clone</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+          aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="#">Twitter - Clone</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item {{ app.request.get('_route') == 'home' ? 'active' }}">
+            <a class="nav-link" href="{{ path('home') }}">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item {{ app.request.get('_route') == 'administrator' ? 'active' }}">
+            <a class="nav-link" href="{{ path('administrator') }}">Admin</a>
+          </li>
 
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item {{ app.request.get('_route') == 'home' ? 'active' }}">
-                    <a class="nav-link" href="{{ path('home') }}">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item {{ app.request.get('_route') == 'administrator' ? 'active' }}">
-                    <a class="nav-link" href="{{ path('administrator') }}">Admin</a>
-                </li>
-
-            </ul>
+        </ul>
 
         {% if app.user %}
-            <ul class="navbar-nav float-right">
+          <ul class="navbar-nav float-right">
+            <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+          </ul>
+        {% endif %}
 
-                <li class="nav-item"><a class="nav-link" href="/logout">Logout</a> </li>
-            </ul>
-         {% endif %}
-
-        </div>
+      </div>
     </nav>
     {% block body %}
     {% endblock %}
 
-        {% block javascripts %}{% endblock %}
+    {% block javascripts %}{% endblock %}
 
-    </body>
+  </body>
 </html>

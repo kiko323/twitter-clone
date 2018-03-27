@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Form\PostType;
@@ -16,96 +17,74 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Symfony\Component\Validator\Constraints\DateTime;
 
 
+class DefaultController extends AbstractController {
 
-class DefaultController extends AbstractController
-{
-    /**
-     * @Route("/", name="home")
-     *
-     */
-    public function index(Request $req){
+  /**
+   * @Route("/", name="home")
+   *
+   */
+  public function indexAction (Request $req) {
 
-        $form= $this->prepareForm($req); //show the Post form
-        $pager=$this->paginate($req);
+    $form = $this->prepareForm($req); //show the Post form
+    $pager = $this->paginate($req);
 
-            return $this->render('default/index.html.twig', array(
-               'posts' =>$pager,
-                'post_form'=> $form->createView()
-            ));
-
-
-    }
+    return $this->render('default/index.html.twig', array(
+      'posts' => $pager,
+      'post_form' => $form->createView()
+    ));
 
 
-    public function fetch()
-    {
-        $posts=$this->getDoctrine()->getRepository(Posts::class)->findby(array(), array('id' => 'DESC'));
-
-        return $posts;
-
-    }
+  }
 
 
+  public function fetch () {
+    $posts = $this->getDoctrine()->getRepository(Posts::class)->findby(array(), array('id' => 'DESC'));
 
-    public function paginate($req)
-    {
-        $pagenum=$req->query->getInt('page',1);
+    return $posts;
 
-        $posts= $this->fetch();
-
-        $adapter= new ArrayAdapter($posts);
-        $pagerfanta=new Pagerfanta($adapter);
-
-        $pagerfanta->setMaxPerPage(5);
-        $pagerfanta->setCurrentPage($pagenum);
+  }
 
 
-        return $pagerfanta;
-    }
+  public function paginate ($req) {
+    $pagenum = $req->query->getInt('page', 1);
+
+    $posts = $this->fetch();
+
+    $adapter = new ArrayAdapter($posts);
+    $pagerfanta = new Pagerfanta($adapter);
+
+    $pagerfanta->setMaxPerPage(5);
+    $pagerfanta->setCurrentPage($pagenum);
+
+    return $pagerfanta;
+  }
 
 
-    public function prepareForm($request)
-    {
-        $form = $this->createForm(PostType::class);
-        $form->handleRequest($request);
+  public function prepareForm ($request) {
+    $form = $this->createForm(PostType::class);
+    $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
-            $postFormData=$form->getData(); //moooozda ce trebati return $this->redirectToRoute('/');
-            $this->insertFields($postFormData['email'], $postFormData['message']);
-            //dump($postFormData);
-        }
-
-        return $form;
-    }
-
-    public function insertFields($email, $message)
-    {
-       $entityManager = $this->getDoctrine()->getManager();
-
-       $post= new Posts();
-
-       $post->setPostsEmail($email);
-       $post->setPostsMsg($message);
-       $post->setPostsCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
-
-       $entityManager->persist($post);
-       $entityManager->flush();
-
+    if ($form->isSubmitted() && $form->isValid()) {
+      $postFormData = $form->getData();
+      $this->insertFields($postFormData['email'], $postFormData['message']);
 
     }
 
+    return $form;
+  }
 
+  public function insertFields ($email, $message) {
+    $entityManager = $this->getDoctrine()->getManager();
 
+    $post = new Posts();
 
+    $post->setPostsEmail($email);
+    $post->setPostsMsg($message);
+    $post->setPostsCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
 
-
-
-
-
-
-
-
+    $entityManager->persist($post);
+    $entityManager->flush();
+  }
 
 
 }

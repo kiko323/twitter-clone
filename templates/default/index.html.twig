@@ -4,44 +4,41 @@
 
 {% block body %}
 
+<main role="main">
 
-
-    <main role="main">
-
-        <div class="jumbotron">
-        <div class="container">
-            <div class="mt-4">
-            {{ form_start(post_form) }}
-            {{ form_widget(post_form) }}
-            <input type="submit" value="Post" class="btn btn-primary float-right"/>
-            {{ form_end(post_form) }}
-            </div>
-        </div>
-        </div>
-
-
-    <div class="container-fluid">
-
-        {% for post in posts  %}
-        <div align="center" class="alert alert-primary p-3" role="alert">
-            <div class="">{{ post.posts_msg }}</div>
-            <br>
-            <span class="blockquote-footer">From <cite title="Source Title">{{ post.posts_email }}</cite></span>
-            <span class="float-left text-muted">   {{ time_diff(post.posts_created_at)}}  </span>
-        {# <a href="/delete/{{ post.id }}" class="btn btn-danger delete-post float-right" data-id="{{ post.id }}" id="delete-post" >DELETE</a> #}
-            <br>
-
-        </div>
-        {% endfor %}
-
-        {% if posts.haveToPaginate %}
-            <div class="pagerfanta float-right">
-                {{ pagerfanta(posts, 'twitter_bootstrap4') }}
-            </div>
-
-         {% endif %}
-
+  <div class="jumbotron">
+    <div class="container">
+      <div class="mt-4">
+        {{ form_start(post_form) }}
+        {{ form_widget(post_form) }}
+        <input type="submit" value="Post" class="btn btn-primary float-right" />
+        {{ form_end(post_form) }}
+      </div>
     </div>
+  </div>
 
-{% endblock %}
-  {% block javascripts %}{% endblock %}
+  <div class="container-fluid">
+
+    {% for post in posts %}
+      <div align="center" class="alert alert-primary p-3" role="alert">
+        <div class="">{{ post.posts_msg }}</div>
+        <br>
+        <span class="blockquote-footer">From <cite title="Source Title">{{ post.posts_email }}</cite></span>
+        <span class="float-left text-muted">   {{ time_diff(post.posts_created_at) }}  </span>
+        {# <a href="/delete/{{ post.id }}" class="btn btn-danger delete-post float-right" data-id="{{ post.id }}" id="delete-post" >DELETE</a> #}
+        <br>
+
+      </div>
+    {% endfor %}
+
+    {% if posts.haveToPaginate %}
+      <div class="pagerfanta float-right">
+        {{ pagerfanta(posts, 'twitter_bootstrap4') }}
+      </div>
+
+    {% endif %}
+
+  </div>
+
+  {% endblock %}
+{% block javascripts %}{% endblock %}
