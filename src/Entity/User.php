@@ -48,7 +48,7 @@ class User implements AdvancedUserInterface, \Serializable {
   private $plainPassword;
 
   /**
-   * @ORM\OneToMany(targetEntity="App\Entity\Posts", mappedBy="User")
+   * @ORM\OneToMany(targetEntity="App\Entity\Posts", mappedBy="userId")
    */
   private $posts;
 

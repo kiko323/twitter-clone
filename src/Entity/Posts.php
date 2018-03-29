@@ -31,7 +31,6 @@ class Posts {
   /**
    * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts")
    * @ORM\JoinColumn(name="userId", nullable=true)
-   *
    */
   private $userId;
 
