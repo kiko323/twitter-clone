@@ -35,15 +35,12 @@ class AdminController extends AbstractController {
       'post_form' => $form->createView()
     ));
 
-
   }
-
 
   public function fetch () {
     $posts = $this->getDoctrine()->getRepository(Posts::class)->findby(array(), array('id' => 'DESC'));
     return $posts;
   }
-
 
   public function paginate ($req) {
     $pagenum = $req->query->getInt('page', 1);
@@ -59,9 +56,8 @@ class AdminController extends AbstractController {
     return $pagerfanta;
   }
 
-
   public function insertPost ($request) {
-    $post=new Posts();
+    $post = new Posts();
 
     $form = $this->createForm(PostType::class, $post);
     $form->handleRequest($request);
@@ -74,7 +70,6 @@ class AdminController extends AbstractController {
     }
     return $form;
   }
-
 
   /**
    * @Route("/admin/delete/{id}", name="delete-post-admin")

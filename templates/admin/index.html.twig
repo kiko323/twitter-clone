@@ -4,9 +4,7 @@
 
 {% block body %}
 
-
 <main role="main">
-
   <div class="jumbotron">
     <div align="center">
       {% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -24,7 +22,6 @@
     </div>
   </div>
 
-
   <div class="container-fluid">
 
     {% for post in posts %}
@@ -32,7 +29,7 @@
         <div class="">{{ post.postsMsg }}</div>
         <br>
         <span class="blockquote-footer">From <cite title="Source Title">{{ (post.userId == null) ?
-            'ADMINISTRATOR' : post.userId.username}}</cite></span>
+            'ADMINISTRATOR' : post.userId.username }}</cite></span>
         <span class="float-left text-muted">   {{ time_diff(post.postsCreatedAt) }}  </span>
         <a href="admin/delete/{{ post.id }}" class="btn btn-danger delete-post float-right" data-id="{{ post.id }}"
             id="delete-post">DELETE</a>

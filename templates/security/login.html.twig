@@ -8,7 +8,6 @@
     <div align="center"><h1>Please login</h1></div>
     <div class="container">
       <div class="mt-4">
-
         {% for message in app.flashes('error') %}
           <div class="flash-notice alert alert-danger">
             {{ message }}
@@ -26,13 +25,6 @@
           <input type="hidden" name="_csrf_token"
               value="{{ csrf_token('authenticate') }}"
           >
-
-          {#
-              If you want to control the URL the user
-              is redirected to on success (more details below)
-              <input type="hidden" name="_target_path" value="/account" />
-          #}
-
           <button type="submit" class="btn btn-primary btn-block mt-2">login</button>
         </form>
 

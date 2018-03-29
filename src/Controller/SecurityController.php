@@ -7,13 +7,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class SecurityController extends Controller {
 
+class SecurityController extends Controller {
 
   /**
    * @Route ("/login", name="login")
    */
-
   public function loginAction (AuthenticationUtils $authenticationUtils) {
     $error = $authenticationUtils->getLastAuthenticationError();
     $lastUsername = $authenticationUtils->getLastUsername();
@@ -24,7 +23,6 @@ class SecurityController extends Controller {
         $error->getMessage()
       );
     }
-
 
     return $this->render('security/login.html.twig', array(
       'last_username' => $lastUsername,

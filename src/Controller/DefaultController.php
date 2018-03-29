@@ -27,19 +27,15 @@ class DefaultController extends AbstractController {
    */
   public function indexAction (Request $req) {
 
-
-    if($this->getUser()){
-        #die(print_r($this->getUser()->getRoles('ROLE_ADMIN')));
-      if($this->getUser()->getRoles() == array('0' => 'ROLE_ADMIN'))
-      {
+    if ($this->getUser()) {
+      if ($this->getUser()->getRoles() == array('0' => 'ROLE_ADMIN')) {
         return $this->redirectToRoute("administrator");
-      }
-      else{
+      } else {
       }
     }
     $form = $this->insertPost($req); //show the Post form
     $pager = $this->paginate($req);
-   # $username= $this->fetchUserOfPost($this->fetch());
+    # $username= $this->fetchUserOfPost($this->fetch());
 
     return $this->render('default/index.html.twig', array(
       'posts' => $pager,
@@ -52,11 +48,8 @@ class DefaultController extends AbstractController {
   public function fetch () {
 
     $posts = $this->getDoctrine()->getRepository(Posts::class)->findby(array(), array('id' => 'DESC'));
-
     return $posts;
   }
-
-
 
   public function paginate ($req) {
     $pagenum = $req->query->getInt('page', 1);
@@ -74,7 +67,7 @@ class DefaultController extends AbstractController {
 
   public function fetchActiveUser () {
 
-    if($this->getUser()){
+    if ($this->getUser()) {
 
       $userid = $this->getUser()->getId();
       $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array(
@@ -85,8 +78,6 @@ class DefaultController extends AbstractController {
     }
 
   }
-
-
 
   public function insertPost ($request) {
     $post = new Posts();
@@ -106,7 +97,6 @@ class DefaultController extends AbstractController {
     }
     return $form;
   }
-
 
 }
 
