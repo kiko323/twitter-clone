@@ -16,7 +16,6 @@ class PostType extends AbstractType {
 
   public function buildForm (FormBuilderInterface $builder, array $options) {
     $builder
-      ->add('postsEmail', EmailType::class)
       ->add('postsMsg', TextareaType::class, array(
         'constraints' => array(
           new Length(array(

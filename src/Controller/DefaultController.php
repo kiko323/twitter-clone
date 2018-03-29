@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\PostType;
 use Doctrine\DBAL\Types\TextType;
 use Pagerfanta\Adapter\ArrayAdapter;
@@ -27,6 +28,7 @@ class DefaultController extends AbstractController {
 
     $form = $this->insertPost($req); //show the Post form
     $pager = $this->paginate($req);
+   # $username= $this->fetchUserOfPost($this->fetch());
 
     return $this->render('default/index.html.twig', array(
       'posts' => $pager,
@@ -36,13 +38,14 @@ class DefaultController extends AbstractController {
 
   }
 
-
   public function fetch () {
+
     $posts = $this->getDoctrine()->getRepository(Posts::class)->findby(array(), array('id' => 'DESC'));
 
-    return $posts;
 
+    return $posts;
   }
+
 
 
   public function paginate ($req) {
@@ -59,9 +62,26 @@ class DefaultController extends AbstractController {
     return $pagerfanta;
   }
 
+  public function fetchActiveUser () {
+
+    if($this->getUser()){
+
+      $userid = $this->getUser()->getId();
+      $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array(
+        'id' => $userid
+      ));
+
+      return $user;
+    }
+
+  }
+
+
 
   public function insertPost ($request) {
-    $post=new Posts();
+    $post = new Posts();
+    $user = $this->fetchActiveUser();
+
 
     $form = $this->createForm(PostType::class, $post);
     $form->handleRequest($request);
@@ -69,8 +89,10 @@ class DefaultController extends AbstractController {
     if ($form->isSubmitted() && $form->isValid()) {
       $entityManager = $this->getDoctrine()->getManager();
       $post->setPostsCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
+      $post->setUserId($user);
 
       $entityManager->persist($post);
+
       $entityManager->flush();
     }
     return $form;

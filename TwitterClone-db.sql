@@ -26,11 +26,25 @@ CREATE TABLE IF NOT EXISTS `migration_versions` (
 -- Dumping structure for table twitter.posts
 CREATE TABLE IF NOT EXISTS `posts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user.id` int(11) DEFAULT NULL,
   `posts_email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `posts_msg` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `posts_created_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_posts_userid` (`user.id`),
+  CONSTRAINT `FK_posts_userid` FOREIGN KEY (`user.id`) REFERENCES `User` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Data exporting was unselected.
+-- Dumping structure for table twitter.User
+CREATE TABLE IF NOT EXISTS `User` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `isActive` bit(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Data exporting was unselected.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

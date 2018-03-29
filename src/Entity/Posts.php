@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Category;
 
 
 /**
@@ -17,12 +18,6 @@ class Posts {
    */
   private $id;
 
-
-  /**
-   * @ORM\Column(name="posts_email", type="string", length=255, nullable=true)
-   */
-  public $postsEmail;
-
   /**
    * @ORM\Column(name="posts_msg", type="string", length=255, nullable=true)
    */
@@ -33,19 +28,17 @@ class Posts {
    */
   public $PostsCreatedAt;
 
+  /**
+   * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts")
+   * @ORM\JoinColumn(name="userId", nullable=true)
+   *
+   */
+  private $userId;
+
   public function getId () {
     return $this->id;
   }
 
-  public function getPostsEmail (): ?string {
-    return $this->postsEmail;
-  }
-
-  public function setPostsEmail (?string $postsEmail): self {
-    $this->postsEmail = $postsEmail;
-
-    return $this;
-  }
 
   public function getPostsMsg (): ?string {
     return $this->postsMsg;
@@ -65,5 +58,15 @@ class Posts {
     $this->PostsCreatedAt = $PostsCreatedAt;
 
     return $this;
+  }
+
+  public function getUserId(): ?User
+  {
+    return $this->userId;
+  }
+
+  public function setUserId(?User $userId)
+  {
+    $this->userId=$userId;
   }
 }
