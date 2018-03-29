@@ -62,7 +62,7 @@ class ProfileController extends Controller
   }
 
   /**
-   * @Route("/profile/delete/{id}", name="delete-post")
+   * @Route("/profile/delete/{id}", name="delete-post-profile")
    */
 
   public function deleteFieldAction ($id) {

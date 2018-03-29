@@ -69,7 +69,6 @@ class AdminController extends AbstractController {
     if ($form->isSubmitted() && $form->isValid()) {
       $entityManager = $this->getDoctrine()->getManager();
       $post->setPostsCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
-
       $entityManager->persist($post);
       $entityManager->flush();
     }
@@ -78,7 +77,7 @@ class AdminController extends AbstractController {
 
 
   /**
-   * @Route("/delete/{id}", name="delete-post")
+   * @Route("/admin/delete/{id}", name="delete-post-admin")
    */
 
   public function deleteFieldAction ($id) {

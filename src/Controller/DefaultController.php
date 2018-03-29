@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Posts;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Security\Core\Role\Role;
 
 
 class DefaultController extends AbstractController {
@@ -26,6 +27,16 @@ class DefaultController extends AbstractController {
    */
   public function indexAction (Request $req) {
 
+
+    if($this->getUser()){
+        #die(print_r($this->getUser()->getRoles('ROLE_ADMIN')));
+      if($this->getUser()->getRoles() == array('0' => 'ROLE_ADMIN'))
+      {
+        return $this->redirectToRoute("administrator");
+      }
+      else{
+      }
+    }
     $form = $this->insertPost($req); //show the Post form
     $pager = $this->paginate($req);
    # $username= $this->fetchUserOfPost($this->fetch());
@@ -41,7 +52,6 @@ class DefaultController extends AbstractController {
   public function fetch () {
 
     $posts = $this->getDoctrine()->getRepository(Posts::class)->findby(array(), array('id' => 'DESC'));
-
 
     return $posts;
   }
@@ -81,7 +91,6 @@ class DefaultController extends AbstractController {
   public function insertPost ($request) {
     $post = new Posts();
     $user = $this->fetchActiveUser();
-
 
     $form = $this->createForm(PostType::class, $post);
     $form->handleRequest($request);
