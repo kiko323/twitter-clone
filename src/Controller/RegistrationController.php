@@ -17,9 +17,6 @@ class RegistrationController extends Controller {
    * @Route("/register", name="registration")
    */
   public function registerAction (Request $req, UserPasswordEncoderInterface $passwordEncoder) {
-    if ($this->getUser()) {
-      return $this->redirectToRoute("home");
-    }
 
     $user = new User();
     $form = $this->createForm(RegisterType::class, $user);
@@ -37,7 +34,7 @@ class RegistrationController extends Controller {
       //tu ce biti slanje maila....
 
       //flashmessage o uspjesnosti
-      $this->redirectToRoute('home');
+     return $this->redirectToRoute('home');
     }
 
     return $this->render('registration/index.html.twig',
