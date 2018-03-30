@@ -31,10 +31,7 @@ class RegistrationController extends Controller {
       $em->persist($user);
       $em->flush();
 
-      //tu ce biti slanje maila....
-
-      //flashmessage o uspjesnosti
-     return $this->redirectToRoute('home');
+      return $this->redirectToRoute('home');
     }
 
     return $this->render('registration/index.html.twig',
